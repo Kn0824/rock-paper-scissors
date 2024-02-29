@@ -64,41 +64,60 @@ function playRound(playerSelection, computerSelection) {
                 break;
         }
     }
-    return outcome;
+    if(outcome[0] == "win") {
+        playerCount++;
+        playerPoints.textContent = playerCount;
+        displayResult.textContent = outcome[1];
+        if(playerCount == 5) {
+            setTimeout(function() {
+                alert("Player Wins! Resetting game")
+                resetGame();
+            }, 10);
+        }
+    }
+    else if (outcome[0] == "loss") {
+        computerCount++;
+        computerPoints.textContent = computerCount;
+        displayResult.textContent = outcome[1];
+        if(computerCount == 5) {
+            setTimeout(function() {
+                alert("Computer Wins! Resetting game")
+                resetGame();
+            }, 10);
+        }
+    }
+    else if (outcome[0] == "tie") {
+        displayResult.textContent = outcome[1];
+    }
+
 }
 
-function playGame() {
-    let playerPoints = 0;
-    let computerPoints = 0;
-    for(let i = 0; i < 5; i++) {
-        let choice = prompt("Enter rock, paper, or scissors");
-        let checkChoice = choice.toLowerCase();
-        while ((checkChoice != "rock") && (checkChoice != "paper") && (checkChoice != "scissors")) {
-            choice = prompt("Enter ONLY rock, paper, or scissors (Not case sensitive)");
-            checkChoice = choice.toLowerCase();
-        }
-        let computerChoice = getComputerChoice();
-        let game = playRound(choice, computerChoice);
-        
-        if(game[0] == "win") {
-            playerPoints++;
-            console.log(game[1]);
-        }
-        else if (game[0] == "loss") {
-            computerPoints++;
-            console.log(game[1]);
-        }
-        else if (game[0] == "tie") {
-            console.log(game[1]);
-        }
-    }
-    if(playerPoints > computerPoints) {
-        console.log("Game Over. You Win!");
-    }
-    else if(computerPoints > playerPoints) {
-        console.log("Game Over. Computer Wins! Womp Womp");
-    }
-    else {
-        console.log("Game Over. Tie!");
-    }
+function resetGame() {
+    computerCount = 0;
+    playerCount = 0;
+    computerPoints.textContent = computerCount;
+    playerPoints.textContent = playerCount;
 }
+
+const rockButton = document.querySelector(".rock");
+const paperButton = document.querySelector(".paper");
+const scissorsButton = document.querySelector(".scissors");
+const displayResult = document.querySelector(".result");
+let playerCount = 0;
+let computerCount = 0;
+
+rockButton.addEventListener("click", function() {
+    playRound("rock", getComputerChoice());
+});
+paperButton.addEventListener("click", function() {
+    playRound("paper", getComputerChoice());
+});
+scissorsButton.addEventListener("click", function() {
+    playRound("scissors", getComputerChoice());
+});
+
+const player = document.querySelector(".playerPoints");
+const playerPoints = player.querySelector(".points");
+
+const computer = document.querySelector(".computerPoints");
+const computerPoints = computer.querySelector(".points");
